@@ -1,0 +1,1 @@
+This is a project to learn integration React-Query with Nextjs showed in Medium website [React Query: Integration with Next JS, are you ready?](https://medium.com/@ecarina.gonzalez/react-query-integration-with-next-js-are-you-ready-7433568356f2)
