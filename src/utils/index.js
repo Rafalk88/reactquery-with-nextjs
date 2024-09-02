@@ -1,1 +1,1 @@
-export * as ReactQueryProvider from "./Providers";
+export { ReactQueryProvider } from "./Providers";
