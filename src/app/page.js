@@ -1,95 +1,51 @@
+"use client";
+
 import Image from "next/image";
-import styles from "./page.module.css";
+import { useQuery } from "@tanstack/react-query";
+import { getMovies } from "@/api";
+
 
 export default function Home() {
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: async () => await getMovies(),
+    queryKey: ["movies"],
+  })
+
+  if (isLoading) return <div role="status">Loading...</div>
+  if(isError) {
+    console.log(error)
+    return <div role="alert">Sorry There was an Error!</div>
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <section className="container mx-auto">
+      <h1 className="p-5 box-decoration-slice bg-gradient-to-r
+        from-indigo-600 to-pink-500 text-white text-center font-bold
+        text-4xl"
+      >
+        Query React Movies
+      </h1>
+      <div
+        className="grid grid-cols-4 gap-4 p-10"
+        role="table"
+      >
+        {data?.results?.map(
+          (movie) => {
+            return (
+              <article
+                key={`movie-${movie.id}`}
+                role="article"
+              >
+                <h2>{movie.title}</h2>
+                <Image
+                  src={movie.poster_path}
+                  alt={`img-${movie.title}`}
+                />
+              </article>
+            );
+          }
+        )}
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </section>
   );
 }
