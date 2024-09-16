@@ -1,4 +1,5 @@
 async function getData() {
+  const url = `https://api.themoviedb.org/3/authentication/guest_session/new`;
   const options = {
     method: "GET",
     headers: {
@@ -7,7 +8,7 @@ async function getData() {
   };
 
   const response = fetch(
-    `${process.env.MOVIE_API_URL}?language=en-US&page=1`,
+    url,
     options
   )
     .then((response) => response.json())
